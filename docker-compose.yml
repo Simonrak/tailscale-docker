@@ -1,0 +1,19 @@
+services:
+  network:
+    image: tailscale/tailscale
+    container_name: tailscale
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - TS_HOSTNAME=your-hostname  # Replace with your desired hostname
+      - TS_AUTHKEY=your-authkey    # Replace with your Tailscale auth key
+      - TS_SOCKET=/var/lib/tailscale/tailscaled.sock
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_ACCEPT_DNS=true
+      - TS_EXTRA_ARGS=--accept-routes --ssh  # --ssh flag here
+    volumes:
+      - ./tailscale/data:/var/lib
+      - ./tailscale/dev/net/tun:/dev/net/tun
+    network_mode: host
+    restart: always
